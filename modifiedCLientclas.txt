@@ -1,0 +1,87 @@
+package main.core;
+
+import java.net.*;
+import java.io.*;
+public class Client {
+	private static DataInputStream inStream;
+	private static DataOutputStream outStream;
+	private static Socket socket;
+	public static void main(String[] args) throws Exception {
+	
+		startConnection("127.0.0.1", Integer.valueOf(args[0]));
+	}
+
+	public static String sendServer(String cmd, String msg) throws IOException {
+		if(cmd.contentEquals(cmd)) {
+		outStream.writeUTF(cmd);
+		outStream.flush();
+		outStream.writeUTF(msg);
+		outStream.flush();
+		}else {
+			outStream.writeUTF(cmd);
+			outStream.flush();
+			outStream.writeUTF(msg);
+			outStream.flush();
+		}
+		
+	    String serverMessage = inStream.readUTF();
+	    System.out.println(msg);
+	     return serverMessage;
+	}
+
+	public static void startConnection(String host, int port) {
+	try{
+	    socket=new Socket(host,port);
+	    inStream=new DataInputStream(socket.getInputStream());
+	    outStream=new DataOutputStream(socket.getOutputStream());
+	    BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+	    String clientMessage="",serverMessage="";
+	    while(!clientMessage.equals("terminate")){
+	    System.out.println("Enter action :");
+	    clientMessage=br.readLine();
+	    
+        if(clientMessage.equals("read")) {
+    	  String key =br.readLine();
+    	  sendServer("read","key");
+        }
+        if(clientMessage.equals("write")) {
+    	  String key =br.readLine();
+    	  String val = br.readLine();
+    	  sendServer("write",  key+ " "+ val);
+        }
+	 }
+	   inStream.close();
+	   outStream.close();
+	   socket.close();
+	 }catch(Exception e){
+	   System.out.println(e);
+	 }
+	}
+	public static void stopConnection() {
+		try {
+			outStream.close();
+			inStream.close();
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+}
+\\
+
+
+\\\\\\\\\\\\\\\\\\\\\
+ if(clientMessage.equals("read")) {
+	    	 outStream.writeUTF(br.readLine());
+		     outStream.flush();
+	     }
+	     if(clientMessage.equals("write")) {
+	    	 outStream.writeUTF(br.readLine());
+	    	 outStream.writeUTF(br.readLine());
+		     outStream.flush();
+	     }
+	     
+
