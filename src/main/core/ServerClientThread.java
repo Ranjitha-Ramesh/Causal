@@ -125,7 +125,8 @@ public class ServerClientThread extends Thread {
 			System.out.println("dependency check passed for " + newkey);
 			String[] vals = { val, String.valueOf(Server.datacentreID) };
 
-			// to sleep on the third thread
+			// to sleep before the msg u is written to third client
+			// to demeonstrate the causal consistency behavior
 			if (Server.datacentreID == 3 && newkey.equalsIgnoreCase("u"))
 				try {
 					System.out.println("Sleeping before the write of y on server 3");
